@@ -1,0 +1,16 @@
+{
+  "name": "link-list",
+  "version": "1.0.0",
+  "description": "A minimal Electron application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "",
+  "keywords": [
+    "Electron"
+  ],
+  "devDependencies": {
+    "electron": "^5.0.7"
+  }
+}
