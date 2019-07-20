@@ -1,0 +1,9 @@
+{
+  "name": "sandbox-electron",
+  "version": "0.0.0",
+  "description": "electron sandbox apps, proof of concepts and mvps",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vrolok/electron.git"
+  }
+}

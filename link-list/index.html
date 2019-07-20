@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>The list of links</title>
-    <link rel="stylesheet" href="index.css">
-  </head>
-  <body>
-    <form action="" method="get" class="url-form">
-      <input type="url" name="url" id="url-input"
-        pattern="https?://.*"
-        required>
-      <input type="submit" id="url-submit" disabled>
-    </form>
-    
-    <div class="list-block">
-      <ul id="link-list"></ul>
-    </div>
-    
-    <template id="link-template">
-      <li>
-        <img src="" alt="favicon" class="link-favicon">
-        <a class="link-url" href=""></a>
-      </li>
-    </template>
-    <script src="renderer.js"></script>
-  </body>
+
+<head>
+	<meta charset="UTF-8">
+	<title>The list of links</title>
+	<link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+	<form action="" method="get" class="url-form">
+		<input type="url" name="url" id="url-input" pattern="https?://.*" required>
+		<input type="submit" id="url-submit" disabled>
+	</form>
+
+	<div class="list-block">
+		<ul id="link-list"></ul>
+	</div>
+
+	<template id="link-template">
+		<li>
+			<img src="" alt="favicon" class="link-favicon">
+			<a class="link-url" href=""></a>
+		</li>
+	</template>
+	<script src="renderer.js"></script>
+</body>
+
 </html>

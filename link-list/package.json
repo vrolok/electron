@@ -1,16 +1,28 @@
 {
-  "name": "link-list",
-  "version": "1.0.0",
-  "description": "A minimal Electron application",
-  "main": "main.js",
-  "scripts": {
-    "start": "electron ."
-  },
-  "repository": "",
-  "keywords": [
-    "Electron"
-  ],
-  "devDependencies": {
-    "electron": "^5.0.7"
-  }
+	"name": "link-list",
+	"version": "0.0.1",
+	"description": "A minimal Electron application",
+	"main": "main.js",
+	"scripts": {
+		"lint": "xo",
+		"start": "electron ."
+	},
+	"repository": "",
+	"keywords": [
+	 "Electron"
+	],
+	"devDependencies": {
+		"electron": "^5.0.7",
+		"xo": "^0.24.0"
+	},
+	"xo": {
+		"semicolon": false,
+		"rules": {
+			"func-names": ["error", "as-needed"]
+		},
+		"envs": [
+		 "node",
+		 "browser"
+		]
+	}
 }
