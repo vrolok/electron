@@ -1,0 +1,30 @@
+{
+	"name": "markdown-editor",
+	"version": "0.0.0",
+	"description": "electron markdown editor",
+	"main": "main.js",
+	"scripts": {
+		"start": "electron .",
+		"lint": "xo",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"xo": "^0.24.0",
+		"electron": "^5.0.7"
+	},
+	"xo": {
+		"semicolon": false,
+		"rules": {
+			"func-names": [
+				"error",
+				"as-needed"
+			]
+		},
+		"envs": [
+			"node",
+			"browser"
+		]
+	}
+}
