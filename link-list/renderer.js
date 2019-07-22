@@ -1,3 +1,4 @@
+const {shell} = require('electron')
 const {qs, gid} = require('./helpers.js')
 
 const input = gid('url-input')
@@ -18,12 +19,12 @@ function appendToList({title, url}) {
 	list.append(clone)
 }
 
-input.addEventListener('keyup', function $$inputValidate() {
+input.addEventListener('keyup', () => {
 	submit.disabled = !input.checkValidity()
 })
 
-submit.addEventListener('click', function $$submitClicked(e) {
-	e.preventDefault()
+submit.addEventListener('click', event => {
+	event.preventDefault()
 
 	const parser = new DOMParser()
 	const parseResponse = text => parser.parseFromString(text, 'text/html')
@@ -34,4 +35,10 @@ submit.addEventListener('click', function $$submitClicked(e) {
 		.then(html => qs('title', html).textContent)
 		.then(title => appendToList({title, url: input.value}))
 		.catch(error => console.warn(error))
+})
+
+list.addEventListener('click', event => {
+	event.preventDefault()
+	// Open in the default system browser
+	shell.openExternal(event.target.href)
 })

@@ -1,3 +1,4 @@
+/* eslint unicorn/prefer-query-selector: 0 */
 function gid(id, scope) {
 	return (scope || document).getElementById(id)
 }
