@@ -1,5 +1,5 @@
 const {shell} = require('electron')
-const {qs, gid} = require('./helpers.js')
+const {qs, gid} = require('../js/helpers')
 
 const input = gid('url-input')
 const submit = gid('url-submit')

@@ -1,6 +1,13 @@
+body input {
+/*	use default system font*/
+	font: menu;
+	margin: 0;
+	padding: 0;
+}
+
 #app {
 	display: grid;
-	grid-template-columns: repeat(2, auto);
+	grid-template-columns: 1fr 1fr;
 	grid-template-rows: repeat(2, auto);
 }
 
@@ -11,29 +18,30 @@
 }
 
 #col-left {
+	display: flex;
 	grid-row: 2 / 3;
 	grid-column: 1 / 2;
+	height: calc(100vh - 72px);
 }
 
 #col-right {
+	display: flex;
 	grid-row: 2 / 3;
 	grid-column: 2 / 3;
+	height: calc(100vh - 72px);
 }
 
 #data-left {
-	width: 95%;
-	height: 100vh;
 	background-color: mintcream;
 }
 
 #data-right {
-	width: 95%;
-	height: 100vh;
-	background-color: azure;
+	padding: 10px;
 }
 
 textarea {
 	color: midnightblue;
+	width: 100%;
 	border-color: transparent;
 	resize: none;
 	padding: 10px;

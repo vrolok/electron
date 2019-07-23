@@ -1,5 +1,6 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, dialog} = require('electron')
+const fs = require('fs')
 
 let mainWindow
 
@@ -44,3 +45,30 @@ app.on('activate', () => {
 		createWindow()
 	}
 })
+
+const openFileDialog = () => {
+	const file = dialog.showOpenDialog(mainWindow, {
+		title: 'Select a markdown file',
+		filters: [
+			{name: 'Files', extensions: ['txt', 'md']}
+		],
+		properties: ['openFile']
+	})
+
+	if (!file) {
+		return
+	}
+
+	return file[0]
+}
+
+const openFile = exports.openFile = () => {
+	const file = openFileDialog()
+	fs.readFile(file, {encoding: 'utf-8'}, (err, data) => {
+		if (err) {
+			return
+		}
+
+		mainWindow.webContents.send('file-opened', file, data)
+	})
+}
