@@ -3,6 +3,7 @@ const marked = require('marked')
 const {gid, qs} = require('../js/helpers')
 
 const mainProcess = remote.require('./main')
+const currentWindow = remote.getCurrentWindow()
 
 const btnNew = gid('btn-new')
 const btnOpen = gid('btn-open')
@@ -13,19 +14,37 @@ const btnHTML = gid('btn-html')
 const dataLeft = gid('data-left')
 const dataRight = gid('data-right')
 
-const renderMarkdown = markdown => {
+let filePath
+
+const renderMarkdown = (markdown) => {
 	dataRight.innerHTML = marked(markdown)
 }
 
-btnOpen.addEventListener('click', () => {
-	mainProcess.openFile()
+const updateEditedState = (isEdited) => {
+	currentWindow.setDocumentEdited(isEdited)
+
+	let title = 'MarkedEditor'
+	if (filePath) title = `${filePath} - ${title}`
+	if (isEdited) title = `${title} (Edited)`
+	currentWindow.setTitle(title)
+}
+
+btnNew.addEventListener('click', () => {
+	mainProcess.createWindow()
 })
 
-dataLeft.addEventListener('keyup', event => {
+btnOpen.addEventListener('click', () => {
+	mainProcess.openFile(currentWindow)
+})
+
+dataLeft.addEventListener('keyup', (event) => {
 	renderMarkdown(event.target.value)
+	// Specifies whether the window’s document has been edited
+	updateEditedState(true)
 })
 
 ipcRenderer.on('file-opened', (event, file, data) => {
+	filePath = file
 	dataLeft.value = data
 	renderMarkdown(dataLeft.value)
 })

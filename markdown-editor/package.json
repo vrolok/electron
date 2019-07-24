@@ -17,6 +17,15 @@
 	"xo": {
 		"semicolon": false,
 		"rules": {
+			"arrow-parens": [
+				2,
+				"as-needed",
+				{ "requireForBlockBody": true }
+			],
+			"curly": [
+				"error",
+				"multi"
+			],
 			"func-names": [
 				"error",
 				"as-needed"
