@@ -3,6 +3,7 @@ const {app, BrowserWindow, dialog} = require('electron')
 const fs = require('fs')
 
 const newWindows = new Set()
+const fileWatchers = new Map()
 
 function createWindow() {
 	// Create the browser window.
@@ -20,7 +21,7 @@ function createWindow() {
 	newWindow.loadFile('index.html')
 
 	// Open the DevTools.
-	// newWindow.webContents.openDevTools()
+	newWindow.webContents.openDevTools()
 
 	// Emmited when a user attempts to close the window
 	newWindow.on('close', (event) => {
@@ -38,6 +39,8 @@ function createWindow() {
 				// todo: save
 			})
 		}
+
+		startWatchingFile(newWindow)
 	})
 
 	// Emitted when the window is closed.
@@ -81,18 +84,61 @@ const openFileDialog = (targetWindow) => {
 	return file[0]
 }
 
-const openFile = (targetWindow) => {
-	const file = openFileDialog(targetWindow)
-	fs.readFile(file, {encoding: 'utf-8'}, (err, data) => {
-		if (err) return
+const openFile = (targetWindow, filePath) => {
+	const file = filePath || openFileDialog(targetWindow)
 
-		targetWindow.webContents.send('file-opened', file, data)
-		targetWindow.setTitle(`${file} - MarkedEditor`)
-		targetWindow.setRepresentedFilename(file)
+	if (file) {
+		fs.readFile(file, {encoding: 'utf-8'}, (err, content) => {
+			if (err) return
+
+			targetWindow.webContents.send('file-opened', file, content)
+			targetWindow.setTitle(`${file} - MarkedEditor`)
+			targetWindow.setRepresentedFilename(file)
+		})
+	}
+
+	startWatchingFile(targetWindow, file)
+}
+
+const startWatchingFile = (targetWindow, file) => {
+	stopWatchingFile(targetWindow)
+
+	const watcher = fs.watch(file, (event) => {
+		if (event === 'change') {
+			fs.readFile(file, {encoding: 'utf-8'}, (err, content) => {
+				if (err) return
+
+				targetWindow.webContents.send('file-opened', file, content)
+			})
+		}
 	})
+
+	fileWatchers.set(targetWindow, watcher)
+}
+
+const stopWatchingFile = (targetWindow) => {
+	if (fileWatchers.has(targetWindow)) {
+		fileWatchers.get(targetWindow).close()
+		fileWatchers.delete(targetWindow)
+	}
+}
+
+const saveFile = (targetWindow, content, callback) => {
+	const file = dialog.showSaveDialog(targetWindow, {
+		title: 'Save file',
+		defaultPath: app.getPath('documents'),
+		filters: [
+			{name: 'Markdown file', extensions: ['md', 'markdown']}
+		]
+	})
+
+	if (!file) return
+	fs.writeFile(file, content, 'utf-8', callback)
+	targetWindow.webContents.send('file-opened', file, content)
 }
 
 module.exports = {
 	openFile,
+	saveFile,
 	createWindow
 }

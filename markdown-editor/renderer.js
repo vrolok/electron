@@ -15,13 +15,18 @@ const dataLeft = gid('data-left')
 const dataRight = gid('data-right')
 
 let filePath
+let originalContent
 
 const renderMarkdown = (markdown) => {
 	dataRight.innerHTML = marked(markdown)
 }
 
 const updateEditedState = (isEdited) => {
+	// The window content has been changed
 	currentWindow.setDocumentEdited(isEdited)
+
+	btnSave.disabled = !isEdited
+	btnRevert.disabled = !isEdited
 
 	let title = 'MarkedEditor'
 	if (filePath) title = `${filePath} - ${title}`
@@ -37,14 +42,23 @@ btnOpen.addEventListener('click', () => {
 	mainProcess.openFile(currentWindow)
 })
 
-dataLeft.addEventListener('keyup', (event) => {
-	renderMarkdown(event.target.value)
-	// Specifies whether the window’s document has been edited
-	updateEditedState(true)
+btnSave.addEventListener('click', () => {
+	mainProcess.saveFile(
+		currentWindow,
+		dataLeft.value,
+		() => updateEditedState(false)
+	)
 })
 
-ipcRenderer.on('file-opened', (event, file, data) => {
+dataLeft.addEventListener('keyup', (event) => {
+	const newContent = event.target.value
+	renderMarkdown(newContent)
+	updateEditedState(newContent !== originalContent)
+})
+
+ipcRenderer.on('file-opened', (event, file, content) => {
 	filePath = file
-	dataLeft.value = data
+	originalContent = content
+	dataLeft.value = content
 	renderMarkdown(dataLeft.value)
 })
