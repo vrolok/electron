@@ -12,7 +12,7 @@
 	 "Electron"
 	],
 	"devDependencies": {
-		"electron": "^5.0.7",
+		"electron": "^15.5.5",
 		"xo": "^0.24.0"
 	},
 	"xo": {
